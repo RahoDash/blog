@@ -12,5 +12,13 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome')->with('users', App\User::all());
 });
+
+Route::get('addArticle', function(){
+	return view('addArticle');
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
