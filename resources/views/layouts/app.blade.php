@@ -108,6 +108,9 @@
                 </div>
             </div>
         </nav>
+        <section class="jumbotron img-background personal-jumotron">
+            <h1 class="text-center">title</h1>
+        </section>
 
         @yield('content')
     </div>
