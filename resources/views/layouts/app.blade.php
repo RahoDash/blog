@@ -68,37 +68,50 @@
 
                                 <!-- Modal -->
                                 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                  <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                      <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                          <span aria-hidden="true">&times;</span>
-                                        </button>
-                                      </div>
-                                      <div class="modal-body">
-                                        <form>
-                                          <div class="form-group">
-                                            <label for="name-of-image">Nom</label>
-                                            <input type="form-text" class="form-control" id="name" aria-describedby="name-help" placeholder="Enter un nom d'image">
-                                            <small id="name-help" class="form-text text-muted">Le nom des images qui vont être enregistrer.</small>
+                                  <form method="POST" action="{{ route('upload') }}">
+                                            {{csrf_field()}}
+
+                                      <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
                                           </div>
-                                          <div class="form-group">
-                                            <label for="descritpion">Description des images</label>
-                                            <textarea class="form-control" id="descritpion" rows="3"></textarea>
+                                          <div class="modal-body">
+                                            
+                                              <div class="form-group">
+                                                <label for="name-of-image">Titre</label>
+                                                <input type="form-text" class="form-control" name="title" id="title" aria-describedby="name-help" placeholder="Entrer le titre du post" value="{{ old('title') }}" required>
+                                                @if ($errors->has('title'))
+                                                    <span class="text-warning">
+                                                        <strong>{{ $errors->first('title') }}</strong>
+                                                    </span>
+                                                @endif
+                                                <small id="name-help" class="form-text text-muted">Le titre du poste</small>
+                                              </div>
+                                              <div class="form-group">
+                                                <label for="descritpion">Description des images</label>
+                                                <textarea class="form-control" id="description" name="description" rows="5" value="{{ old('descritpion') }}"></textarea>
+                                                @if ($errors->has('descritpion'))
+                                                    <span class="text-warning">
+                                                        <strong>{{ $errors->first('description') }}</strong>
+                                                    </span>
+                                                @endif
+                                              </div>
+                                              <div class="form-group">
+                                                <label for="InputFile">Images à ajouter</label>
+                                                <input type="file" class="form-control-file" id="imgContents" name="imgContent" multiple="multiple" aria-describedby="fileHelp" accept="image/*" value="{{ old('imgContent') }}" required>
+                                                <small id="fileHelp" class="form-text text-muted">Maintenez Ctrl. pour selectionner plusieurs images à la fois</small>
+                                              </div>
+                                              <button type="submit" class="btn btn-primary">Ajouter !</button>
+                                            </form>
                                           </div>
-                                          <div class="form-group">
-                                            <label for="InputFile">File input</label>
-                                            <input type="file" class="form-control-file" id="InputFile" multiple="multiple" aria-describedby="fileHelp" accept="image/*">
-                                            <small id="fileHelp" class="form-text text-muted">Maintenez Ctrl. pour ajouter plusieurs images à la fois</small>
+                                          <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                           </div>
-                                          <button type="submit" class="btn btn-primary">Ajouter !</button>
-                                        </form>
-                                      </div>
-                                      <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary">Save changes</button>
-                                      </div>
+                                      </form>
                                     </div>
                                   </div>
                                 </div>
@@ -111,7 +124,11 @@
         <section class="jumbotron img-background personal-jumotron">
             <h1 class="text-center">title</h1>
         </section>
-
+        @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        @endif
         @yield('content')
     </div>
 

@@ -19,6 +19,8 @@ Route::get('addArticle', function(){
 	return view('addArticle');
 });
 
+Route::post('/upload', 'ArticleController@create')->name('upload');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

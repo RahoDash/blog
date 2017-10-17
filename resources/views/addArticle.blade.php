@@ -1,9 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="jumbotron img-background personal-jumotron">
-    <h1 class="text-center">title</h1>
-</section>
 <div class="container">
     
     <div class="row">
