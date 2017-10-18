@@ -4,10 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Image extends Model
+class Photo extends Model
 {
     protected $fillable = [
-        'image_path',
+        'photo_path', 'article_id',
     ];
 
     /**
@@ -16,6 +16,6 @@ class Image extends Model
      * @var array
      */
     protected $hidden = [
-        'post_id',
+        
     ];
 }

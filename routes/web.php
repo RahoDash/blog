@@ -12,14 +12,19 @@
 */
 
 Route::get('/', function () {
-    return view('welcome')->with('users', App\User::all());
+
+	// $articles = DB::table('articles')
+ //            ->leftJoin('images', 'articles.id', '=', 'images.article_id')
+ //            ->get();
+
+    return view('welcome')->with('articles', App\Article::all())->with('photos', App\Photo::all());
 });
 
 Route::get('addArticle', function(){
 	return view('addArticle');
 });
 
-Route::post('/upload', 'ArticleController@create')->name('upload');
+Route::post('/', 'ArticleController@create')->name('upload');
 
 Auth::routes();
 

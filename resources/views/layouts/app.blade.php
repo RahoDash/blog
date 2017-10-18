@@ -68,7 +68,7 @@
 
                                 <!-- Modal -->
                                 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                  <form method="POST" action="{{ route('upload') }}">
+                                  <form method="POST" action="{{ route('upload') }}" enctype="multipart/form-data">
                                             {{csrf_field()}}
 
                                       <div class="modal-dialog" role="document">
@@ -102,7 +102,12 @@
                                               </div>
                                               <div class="form-group">
                                                 <label for="InputFile">Images à ajouter</label>
-                                                <input type="file" class="form-control-file" id="imgContents" name="imgContent" multiple="multiple" aria-describedby="fileHelp" accept="image/*" value="{{ old('imgContent') }}" required>
+                                                <input type="file" class="form-control-file" id="imgContent" name="imgContent[]" multiple aria-describedby="fileHelp" accept="image/*" value="{{ old('imgContent.0') }}" required>
+                                                @if ($errors->has('imgContent'))
+                                                    <span class="text-warning">
+                                                        <strong>{{ $errors->first('imgContent.0') }}</strong>
+                                                    </span>
+                                                @endif
                                                 <small id="fileHelp" class="form-text text-muted">Maintenez Ctrl. pour selectionner plusieurs images à la fois</small>
                                               </div>
                                               <button type="submit" class="btn btn-primary">Ajouter !</button>
