@@ -10,6 +10,15 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    <!-- Script -->
+    <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
@@ -102,23 +111,17 @@
                                               </div>
                                               <div class="form-group">
                                                 <label for="InputFile">Images à ajouter</label>
-                                                <input type="file" class="form-control-file" id="imgContent" name="imgContent[]" multiple aria-describedby="fileHelp" accept="image/*" value="{{ old('imgContent.0') }}" required>
-                                                @if ($errors->has('imgContent'))
-                                                    <span class="text-warning">
-                                                        <strong>{{ $errors->first('imgContent.0') }}</strong>
-                                                    </span>
-                                                @endif
+                                                <input type="file" class="form-control-file" id="imgContent" name="imgContent[]" multiple aria-describedby="fileHelp" accept="image/*" value="{{ old('imgContent.*') }}" required>
                                                 <small id="fileHelp" class="form-text text-muted">Maintenez Ctrl. pour selectionner plusieurs images à la fois</small>
                                               </div>
-                                              <button type="submit" class="btn btn-primary">Ajouter !</button>
-                                            </form>
                                           </div>
                                           <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                              <button type="submit" class="btn btn-primary">Ajouter !</button>
                                           </div>
-                                      </form>
-                                    </div>
-                                  </div>
+                                        </div>
+                                      </div>
+                                  </form>
                                 </div>
                             </li>
                         @endguest
@@ -129,6 +132,11 @@
         <section class="jumbotron img-background personal-jumotron">
             <h1 class="text-center">title</h1>
         </section>
+        @if ($errors->has('imgContent.*'))
+            <span class="text-warning">
+                <strong>{{ $errors->first('imgContent.*') }}</strong>
+            </span>
+        @endif
         @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
@@ -139,5 +147,6 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+
 </body>
 </html>

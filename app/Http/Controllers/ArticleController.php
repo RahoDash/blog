@@ -24,7 +24,7 @@ class ArticleController extends Controller
     {
     	$this->validate($request, [
 			'title' => 'required|unique:articles',
-			'imgContent.0' => 'required|mimes:jpeg,png,jpg,gif,svg|max:3072',
+			'imgContent.*' => 'required|mimes:jpeg,png,jpg,gif,svg|max:3072',
 	    ]);
 
     	$id = Auth::user()->id;
@@ -33,19 +33,41 @@ class ArticleController extends Controller
             'description' => $request['description'],
             'user_id' => $id,
         ]);
-		//Storage::disk('local')->put('img.jpg',file($request['imgContent']));
-        //return count($request['imgContent']);
-		//return back()->with('success','L\'image a bien été ajouté');
-		$count = count($request->imgContent);
-		//$request->imgContent;
+
+
 		Image::configure(array('driver' => 'imagick'));
 		foreach ($request->imgContent as $image) {
-			$path = Storage::putFile('image', Image::make($image)->resize(900,null));
+            //Storage::disk('local')->put('img.jpg',file($request['imgContent']));
+
+            $path = Storage::putFile('image', $image);
+
+            // open an image file
+            $img = Image::make($image->getRealPath());
+
+            // now you are able to resize the instance
+            $img->widen(900);
+
+            // finally we save the image as a new file
+            $img->save(storage_path('app\\public\\').$path);
+
 			Photo::create([
 				'photo_path' => $path,
 				'article_id' => $article->id,
 			]);
         }
-        return back()->with('success','L\'image a bien été ajouté');
+        return back()->with('success','Les images ont bien été ajoutés');
+    }
+
+    public function destroy($id)
+    {
+        $article = Article::find($id);
+        $photos = Photo::all()->where('article_id',$id);
+        foreach ($photos as $photo){
+            Storage::delete($photo->photo_path);
+        }
+        //Storage::delete($photo->photo_path);
+        $article->delete();
+        return back()
+            ->with('success','Article removed successfully.');
     }
 }

@@ -12,17 +12,11 @@
 */
 
 Route::get('/', function () {
-
-	// $articles = DB::table('articles')
- //            ->leftJoin('images', 'articles.id', '=', 'images.article_id')
- //            ->get();
-
     return view('welcome')->with('articles', App\Article::all())->with('photos', App\Photo::all());
 });
 
-Route::get('addArticle', function(){
-	return view('addArticle');
-});
+Route::delete('/photo/{id}', 'PhotoController@destroy');
+Route::delete('/{id}', 'ArticleController@destroy');
 
 Route::post('/', 'ArticleController@create')->name('upload');
 
