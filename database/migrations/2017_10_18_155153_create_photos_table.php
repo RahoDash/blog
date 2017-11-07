@@ -17,7 +17,7 @@ class CreatePhotosTable extends Migration
             $table->increments('id');
             $table->string('photo_path')->unique();
             $table->integer('article_id')->unsigned();
-            $table->foreign('article_id')->references('id')->on('articles')->onDelete('cascade');
+            $table->foreign('article_id')->references('id')->on('articles');
             $table->timestamps();
         });
     }

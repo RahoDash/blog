@@ -64,6 +64,7 @@ class ArticleController extends Controller
         $photos = Photo::all()->where('article_id',$id);
         foreach ($photos as $photo){
             Storage::delete($photo->photo_path);
+            $photo->delete();
         }
         //Storage::delete($photo->photo_path);
         $article->delete();
