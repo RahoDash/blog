@@ -22,38 +22,42 @@ class ArticleController extends Controller
 
     protected function create(Request $request)
     {
-    	$this->validate($request, [
-			'title' => 'required|unique:articles',
-			'imgContent.*' => 'required|mimes:jpeg,png,jpg,gif,svg|max:3072',
-	    ]);
+        try{
+            $this->validate($request, [
+                'title' => 'required|unique:articles',
+                'imgContent.*' => 'required|mimes:jpeg,png,jpg,gif,svg|max:3072',
+            ]);
 
-    	$id = Auth::user()->id;
-        $article = Article::create([
-            'title' => $request['title'],
-            'description' => $request['description'],
-            'user_id' => $id,
-        ]);
+            $id = Auth::user()->id;
+            $article = Article::create([
+                'title' => $request['title'],
+                'description' => $request['description'],
+                'user_id' => $id,
+            ]);
 
+            Image::configure(array('driver' => 'imagick'));
+            foreach ($request->imgContent as $image) {
+                //Storage::disk('local')->put('img.jpg',file($request['imgContent']));
 
-		Image::configure(array('driver' => 'imagick'));
-		foreach ($request->imgContent as $image) {
-            //Storage::disk('local')->put('img.jpg',file($request['imgContent']));
+                $path = Storage::putFile('image', $image);
 
-            $path = Storage::putFile('image', $image);
+                // open an image file
+                $img = Image::make($image->getRealPath());
 
-            // open an image file
-            $img = Image::make($image->getRealPath());
+                // now you are able to resize the instance
+                $img->widen(900);
 
-            // now you are able to resize the instance
-            $img->widen(900);
+                // finally we save the image as a new file
+                $img->save(storage_path('app\\public\\').$path);
 
-            // finally we save the image as a new file
-            $img->save(storage_path('app\\public\\').$path);
-
-			Photo::create([
-				'photo_path' => $path,
-				'article_id' => $article->id,
-			]);
+                Photo::create([
+                    'photo_path' => $path,
+                    'article_id' => $article->id,
+                ]);
+            }
+        }
+        catch(\Exception $e){
+            return back()->withErrors(['Error ! something went wrong !']);
         }
         return back()->with('success','Les images ont bien été ajoutés');
     }

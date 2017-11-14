@@ -103,7 +103,7 @@
                                               <div class="form-group">
                                                 <label for="descritpion">Description des images</label>
                                                 <textarea class="form-control" id="description" name="description" rows="5" value="{{ old('descritpion') }}"></textarea>
-                                                @if ($errors->has('descritpion'))
+                                                @if ($errors->has('description'))
                                                     <span class="text-warning">
                                                         <strong>{{ $errors->first('description') }}</strong>
                                                     </span>
@@ -132,16 +132,19 @@
         <section class="jumbotron img-background personal-jumotron">
             <h1 class="text-center">title</h1>
         </section>
-        @if ($errors->has('imgContent.*'))
-            <span class="text-warning">
-                <strong>{{ $errors->first('imgContent.*') }}</strong>
-            </span>
-        @endif
-        @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
+        <div class="container">
+            @if ($errors->any())
+                <div class="alert alert-warning">
+                    <strong>{{ $errors->first() }}</strong>
+                </div>
+            @endif
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
         </div>
-        @endif
+
         @yield('content')
     </div>
 
