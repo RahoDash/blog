@@ -11,68 +11,74 @@ use Illuminate\Http\File;
 use App\Photo;
 use Intervention\Image\ImageManager;
 use Intervention\Image\ImageManagerStatic as Image;
+use Mockery\Exception;
+use Whoops\Exception\ErrorException;
+use Illuminate\Support\Facades\DB;
 
 class ArticleController extends Controller
 {
 
-	public function __construct()
+    public function __construct()
     {
         $this->middleware('auth');
     }
 
     protected function create(Request $request)
     {
-        try{
+        DB::beginTransaction();
+        try {
             $this->validate($request, [
                 'title' => 'required|unique:articles',
                 'imgContent.*' => 'required|mimes:jpeg,png,jpg,gif,svg|max:3072',
             ]);
 
             $id = Auth::user()->id;
+
             $article = Article::create([
                 'title' => $request['title'],
                 'description' => $request['description'],
                 'user_id' => $id,
             ]);
 
-            Image::configure(array('driver' => 'imagick'));
             foreach ($request->imgContent as $image) {
-                //Storage::disk('local')->put('img.jpg',file($request['imgContent']));
-
                 $path = Storage::putFile('image', $image);
 
-                // open an image file
                 $img = Image::make($image->getRealPath());
-
-                // now you are able to resize the instance
                 $img->widen(900);
-
-                // finally we save the image as a new file
-                $img->save(storage_path('app\\public\\').$path);
+                $img->save(storage_path('app\\public\\') . $path);
 
                 Photo::create([
                     'photo_path' => $path,
                     'article_id' => $article->id,
                 ]);
             }
+
+            DB::commit();
+            return back()->with('success', 'Les images ont bien été ajoutées.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withErrors(['Error ! Something went wrong.']);
         }
-        catch(\Exception $e){
-            return back()->withErrors(['Error ! something went wrong !']);
-        }
-        return back()->with('success','Les images ont bien été ajoutés');
     }
 
     public function destroy($id)
     {
         $article = Article::find($id);
-        $photos = Photo::all()->where('article_id',$id);
-        foreach ($photos as $photo){
+        $photos = Photo::all()->where('article_id', $id);
+        foreach ($photos as $photo) {
             Storage::delete($photo->photo_path);
-            $photo->delete();
+            $exist = Storage::disk('public')->exists($photo->photo_path);
+            if (!$exist){
+                $photo->delete();
+            }
         }
         //Storage::delete($photo->photo_path);
-        $article->delete();
-        return back()
-            ->with('success','Article removed successfully.');
+        $photos = Photo::where('article_id', $id)->first();
+
+        if ($photos == null){
+            $article->delete();
+        }
+
+        return back()->with('success', 'Article removed successfully.');
     }
 }

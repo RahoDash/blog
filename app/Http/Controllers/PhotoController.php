@@ -26,7 +26,10 @@ class PhotoController extends Controller
         $photo = Photo::find($id);
         //dd($photo);
         Storage::delete($photo->photo_path);
-        $photo->delete();
+        $exist = Storage::disk('public')->exists($photo->photo_path);
+        if (!$exist){
+            $photo->delete();
+        }
         return back()
             ->with('success','Image removed successfully.');
     }

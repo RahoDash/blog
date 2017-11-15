@@ -77,3 +77,10 @@ form.pull-left {
     min-height: 215px;
 }
 
+.fade.out{
+    opacity: 0 !important;
+}
+
+.fade.none{
+    display: none !important;
+}

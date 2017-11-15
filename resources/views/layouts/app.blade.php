@@ -134,12 +134,12 @@
         </section>
         <div class="container">
             @if ($errors->any())
-                <div class="alert alert-warning">
+                <div id="myAlert" class="alert alert-warning fade">
                     <strong>{{ $errors->first() }}</strong>
                 </div>
             @endif
             @if (session('success'))
-                <div class="alert alert-success">
+                <div id="myAlert" class="alert alert-success fade">
                     {{ session('success') }}
                 </div>
             @endif
@@ -150,6 +150,31 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script>
+        function showAlert() {
+            $("#myAlert").addClass("in");
+        }
+
+        function removeAlert() {
+            $("#myAlert").addClass("out");
+        }
+
+        function removeAlertDisplay() {
+            $("#myAlert").addClass("none");
+        }
+
+        window.setTimeout(function () {
+            showAlert();
+        }, 300);
+
+        window.setTimeout(function () {
+            removeAlert();
+        }, 5000);
+
+        window.setTimeout(function () {
+            removeAlertDisplay();
+        }, 5300);
+    </script>
 
 </body>
 </html>
