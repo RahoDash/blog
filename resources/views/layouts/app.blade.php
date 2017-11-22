@@ -11,12 +11,15 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Script -->
-     <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+{{--     <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>--}}
+
+    <link rel="stylesheet" href="../darkroomjs-master/build/darkroom.css">
+    <link rel="stylesheet" href="../darkroomjs-master/demo/css/page.css">
     <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <!-- Styles -->
@@ -130,7 +133,7 @@
             </div>
         </nav>
         <section class="jumbotron img-background personal-jumotron">
-            <h1 class="text-center">title</h1>
+            <h1 class="text-center title-header">CFPT</h1>
         </section>
         <div class="container">
             @if ($errors->any())

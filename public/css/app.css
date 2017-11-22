@@ -84,3 +84,12 @@ form.pull-left {
 .fade.none{
     display: none !important;
 }
+
+.title-header{
+    color:white !important;
+    text-shadow: 1px 2px 6px grey, -1px 1px 0px grey, -1px 1px 20px grey, -1px 1px 20px grey;
+}
+
+.button-modif-top{
+    top:-35px;
+}

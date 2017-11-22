@@ -23,15 +23,16 @@ class ArticleController extends Controller
         $this->middleware('auth');
     }
 
+
+
     protected function create(Request $request)
     {
         DB::beginTransaction();
+        $this->validate($request, [
+            'title' => 'required|unique:articles',
+            'imgContent.*' => 'required|mimes:jpeg,png,jpg,gif,svg|max:3072',
+        ]);
         try {
-            $this->validate($request, [
-                'title' => 'required|unique:articles',
-                'imgContent.*' => 'required|mimes:jpeg,png,jpg,gif,svg|max:3072',
-            ]);
-
             $id = Auth::user()->id;
 
             $article = Article::create([
@@ -39,46 +40,65 @@ class ArticleController extends Controller
                 'description' => $request['description'],
                 'user_id' => $id,
             ]);
-
-            foreach ($request->imgContent as $image) {
-                $path = Storage::putFile('image', $image);
-
-                $img = Image::make($image->getRealPath());
-                $img->widen(900);
-                $img->save(storage_path('app\\public\\') . $path);
-
-                Photo::create([
-                    'photo_path' => $path,
-                    'article_id' => $article->id,
-                ]);
-            }
+                addPicture($request->imgContent,$article->id);
 
             DB::commit();
             return back()->with('success', 'Les images ont bien été ajoutées.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->withErrors(['Error ! Something went wrong.']);
+        }
+    }
+
+    public function addPicture($pictures ,$article_id){
+        foreach ($pictures as $picture) {
+            $path = Storage::putFile('image', $picture);
+
+            $img = Image::make($picture->getRealPath());
+            $img->widen(900);
+            $img->save(storage_path('app\\public\\') . $path);
+
+            Photo::create([
+                'photo_path' => $path,
+                'article_id' => $article_id,
+            ]);
         }
     }
 
     public function destroy($id)
     {
-        $article = Article::find($id);
-        $photos = Photo::all()->where('article_id', $id);
-        foreach ($photos as $photo) {
-            Storage::delete($photo->photo_path);
-            $exist = Storage::disk('public')->exists($photo->photo_path);
-            if (!$exist){
-                $photo->delete();
+        try{
+            $article = Article::find($id);
+            $photos = Photo::all()->where('article_id', $id);
+            foreach ($photos as $photo) {
+                Storage::delete($photo->photo_path);
+                $exist = Storage::disk('public')->exists($photo->photo_path);
+                if (!$exist){
+                    $photo->delete();
+                }
             }
-        }
-        //Storage::delete($photo->photo_path);
-        $photos = Photo::where('article_id', $id)->first();
+            //Storage::delete($photo->photo_path);
+            $photos = Photo::where('article_id', $id)->first();
 
-        if ($photos == null){
-            $article->delete();
-        }
+            if ($photos == null){
+                $article->delete();
+            }
 
-        return back()->with('success', 'Article removed successfully.');
+            return back()->with('success', 'Article removed successfully.');
+        }
+        catch (\Exception $e){
+            return back()->withErrors(['Error ! Something went wrong.']);
+        }
+    }
+
+    public function updateDesc($article_id, Request $request){
+        try{
+            $article = Article::find($article_id);
+            $article->description = $request->description;
+            $article->save();
+
+            return back()->with('success', 'Article removed successfully.');
+        }catch (\Exception $e){
+            return back()->withErrors(['Error ! Something went wrong.']);
+        }
     }
 }

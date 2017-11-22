@@ -5,6 +5,33 @@
 
 
 @foreach ($articles->sortByDesc('id') as $article)
+    <div class="modal fade" id="updateDescModal{{$article->id}}">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modifier la description</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ action('ArticleController@updateDesc',$article->id) }}" method="POST" enctype="multipart/form-data">
+                    {{csrf_field()}}
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="descritpion">Description des images</label>
+                            <textarea class="form-control" id="description" name="description" rows="5" value="{{ old('descritpion') }}">{{$article->description}}</textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-primary">Modifier la descritpion</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
     <div class="modal fade" id="addModal{{$article->id}}">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -14,17 +41,20 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="InputFile">Images à ajouter</label>
-                        <input type="file" class="form-control-file" id="imgContent" name="imgContent[]" multiple aria-describedby="fileHelp" accept="image/*" value="{{ old('imgContent.*') }}" required>
-                        <small id="fileHelp" class="form-text text-muted">Maintenez Ctrl. pour selectionner plusieurs images à la fois</small>
+                <form action="{{ action('PhotoController@addPicture',$article->id) }}" method="POST" enctype="multipart/form-data">
+                    {{csrf_field()}}
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="InputFile">Images à ajouter</label>
+                            <input type="file" class="form-control-file" id="imgContent" name="imgContent[]" multiple aria-describedby="fileHelp" accept="image/*" value="{{ old('imgContent.*') }}" required>
+                            <small id="fileHelp" class="form-text text-muted">Maintenez Ctrl. pour selectionner plusieurs images à la fois</small>
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <button type="submit" class="btn btn-primary">Ajouter les photos</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -43,7 +73,12 @@
         <div class="col-sm-9">
             <div class="panel panel-default">
                 <div class=" panel-heading">
-                    <p>{{$article->description}}<p>
+                    <div>
+                    <span><h5>{{$article->description}}</h5></span>
+                        @if((Auth::check()) && (Auth::user()->id == $article->user_id))
+                        <button type="button" class="btn btn-primary pull-right glyphicon glyphicon-pencil button-modif-top" data-toggle="modal" data-target="#updateDescModal{{$article->id}}">                        </button>
+                        @endif
+                    </div>
                 </div>
                 <div class="panel-body">
                     @foreach ($photos as $photo)

@@ -19,6 +19,14 @@ Route::delete('/photo/{id}', 'PhotoController@destroy');
 Route::delete('/{id}', 'ArticleController@destroy');
 
 Route::post('/', 'ArticleController@create')->name('upload');
+Route::post('/addPicture{article_id}', 'PhotoController@addPicture');
+
+Route::post('/desc{id}', 'ArticleController@updateDesc');
+
+Route::get('/edit_image', function (){
+   return view('edit_image');
+});
+
 
 Auth::routes();
 
