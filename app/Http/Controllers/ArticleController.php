@@ -6,13 +6,9 @@ use Illuminate\Http\Request;
 use App\Article;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Http\File;
 use App\Photo;
-use Intervention\Image\ImageManager;
 use Intervention\Image\ImageManagerStatic as Image;
-use Mockery\Exception;
-use Whoops\Exception\ErrorException;
+
 use Illuminate\Support\Facades\DB;
 
 class ArticleController extends Controller
@@ -40,7 +36,8 @@ class ArticleController extends Controller
                 'description' => $request['description'],
                 'user_id' => $id,
             ]);
-                addPicture($request->imgContent,$article->id);
+
+            $this->addPicture($request->imgContent,$article->id);
 
             DB::commit();
             return back()->with('success', 'Les images ont bien été ajoutées.');
@@ -49,7 +46,7 @@ class ArticleController extends Controller
         }
     }
 
-    public function addPicture($pictures ,$article_id){
+    protected function addPicture($pictures ,$article_id){
         foreach ($pictures as $picture) {
             $path = Storage::putFile('image', $picture);
 

@@ -11,12 +11,12 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Script -->
-{{--     <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.1.25/jquery.fancybox.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>--}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <link rel="stylesheet" href="../darkroomjs-master/build/darkroom.css">
     <link rel="stylesheet" href="../darkroomjs-master/demo/css/page.css">
@@ -41,7 +41,7 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
+                        <span class="logo"></span>
                     </a>
                 </div>
 
@@ -73,7 +73,7 @@
                                 </ul>
                                 <!-- Left Side Of Navbar -->
                                 <button type="button" class="btn btn-primary btn-add" data-toggle="modal" data-target="#myModal">
-                                    Ajouter un article
+                                    <span class="btn-add-icone"></span>
                                 </button>
                                 <!-- Button trigger modal -->
                                 
@@ -87,8 +87,8 @@
                                         <div class="modal-content">
                                           <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                              <span aria-hidden="true">&times;</span>
+                                            <button type="button" class="btn-close btn btn-link" data-dismiss="modal" aria-label="Close">
+                                                <span class="btn-close-icone"></span>
                                             </button>
                                           </div>
                                           <div class="modal-body">
@@ -119,7 +119,7 @@
                                               </div>
                                           </div>
                                           <div class="modal-footer">
-                                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
                                               <button type="submit" class="btn btn-primary">Ajouter !</button>
                                           </div>
                                         </div>
@@ -132,8 +132,8 @@
                 </div>
             </div>
         </nav>
-        <section class="jumbotron img-background personal-jumotron">
-            <h1 class="text-center title-header">CFPT</h1>
+        <section class="jumbotron img-background personal-jumotron background ">
+            <a style="display: none;" href='https://www.freepik.com/free-vector/infographic-unlimited-production-illustration_1218065.htm'>Designed by Freepik</a>
         </section>
         <div class="container">
             @if ($errors->any())

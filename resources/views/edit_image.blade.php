@@ -5,18 +5,12 @@
         <div class="container">
             <section class="copy">
                 <h2 class="sr-only">Introduction</h2>
-
-
-
-                <p class="intro">
-                    <strong>DarkroomJS</strong> is a JavaScript library which provides basic
-                    image editing tools in your browser, such as <strong>rotation</strong> or <strong>cropping</strong>.
-                    It is based on the awesome <a href="http://fabricjs.com/">FabricJS</a> library
-                    to handle images in HTML5 canvas.
-                </p>
+                <br/>
+                <br/><br/>
+                <br/>
 
                 <div class="figure-wrapper">
-                    <img src="{{asset('img/img.jpeg')}}" alt="DomoKun" id="target">
+                    <img src="{{asset('img/background.jpg')}}" alt="DomoKun" id="target">
                 </div>
             </section>
         </div>
