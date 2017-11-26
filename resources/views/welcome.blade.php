@@ -92,6 +92,10 @@
                                     <input type="hidden" name="_method" value="delete">
                                     <button type="submit" class="close rounded no_padding"><span class="btn-close-icone"></span></button>
                                 </form>
+                                <form action="{{action('PhotoController@viewModifyPicture', $photo)}}" method="POST">
+                                    {!! csrf_field() !!}
+                                    <button type="submit" class="close modify rounded no_padding"><span class="btn-modify"></span></button>
+                                </form>
                             @endif
                             <div class="image-wrap ">
                                 <a class="thumbnail" data-fancybox="gallery{{$photo->article_id}}" rel="ligthbox" href="/storage/{{ $photo->photo_path }}">

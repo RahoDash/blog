@@ -214,3 +214,17 @@ button.close {
 div#app-navbar-collapse {
     margin-top: 10px;
 }
+
+button.close.modify.rounded.no_padding {
+    top: 6px;
+    background-color: black;
+    left: 20px;
+    opacity: 0.5;
+    border-radius: 6px;
+    width: 40px;
+    height: 40px;
+}
+
+.btn-validate{
+    margin-top:20px;
+}

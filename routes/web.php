@@ -15,6 +15,10 @@ Route::get('/', function () {
     return view('welcome')->with('articles', App\Article::all())->with('photos', App\Photo::all());
 });
 
+Route::get('/edit', function (){
+    return view('edit');
+});
+
 Route::delete('/photo/{id}', 'PhotoController@destroy');
 Route::delete('/{id}', 'ArticleController@destroy');
 
@@ -23,9 +27,14 @@ Route::post('/addPicture{article_id}', 'PhotoController@addPicture');
 
 Route::post('/desc{id}', 'ArticleController@updateDesc');
 
-Route::get('/edit_image', function (){
-   return view('edit_image');
-});
+Route::post('/edit{photo}','PhotoController@viewModifyPicture');
+
+Route::post('image','PhotoController@modifyPicture');
+
+
+
+
+
 
 
 Auth::routes();

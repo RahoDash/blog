@@ -26,7 +26,7 @@ class ArticleController extends Controller
         DB::beginTransaction();
         $this->validate($request, [
             'title' => 'required|unique:articles',
-            'imgContent.*' => 'required|mimes:jpeg,png,jpg,gif,svg|max:3072',
+            'imgContent.*' => 'required|mimes:jpeg,png,jpg,gif|max:3072',
         ]);
         try {
             $id = Auth::user()->id;
