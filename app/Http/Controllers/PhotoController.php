@@ -3,15 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Article;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Http\File;
 use App\Photo;
-use Intervention\Image\ImageManager;
 use Intervention\Image\ImageManagerStatic as Image;
-use Mockery\Exception;
 use Illuminate\Support\Facades\DB;
 
 class PhotoController extends Controller
@@ -89,10 +83,13 @@ class PhotoController extends Controller
                     $photo->photo_path = $new_path;
                     $photo->save();
                 }
+                echo "L'image a été modifiée.";
+            }else{
+                echo "L'image n'est pas validée";
             }
         }
         catch (\Exception $e){
-            return false;
+            echo "L'image n'est pas validée";
         }
     }
 }

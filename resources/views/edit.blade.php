@@ -77,6 +77,7 @@
             </section>
         </div>
     </div>
+</div>
 
 <script src="./darkroomjs-master/demo/vendor/fabric.js"></script>
 <script src="../darkroomjs-master/build/darkroom.js"></script>
@@ -119,15 +120,14 @@
             var host = './image';
 
 
-            var id = '{{$photo->id}}'
+            var id = '{{$photo->id}}';
             $.ajax({
                 type: "POST",
                 url: host,
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                 data: {imageData:src, id: id, "_token": "{{ csrf_token() }}"},
-                success: function() {
-                    alert("La photo à été enregistrer ! <br/>" +
-                        "Retourner à l'accueil pour voir votre modifiaction.")
+                success: function(data) {
+                    alert(data);
                 }
             });
         }
